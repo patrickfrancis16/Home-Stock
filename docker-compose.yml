@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  php-apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"       # Porta para acessar o servidor PHP
+    volumes:
+      - ./src:/var/www/html # Sincronizando código-fonte local com o container
+    environment:
+      # Configurações de variáveis de ambiente para acessar o banco de dados externo
+      DB_HOST: "10.4.0.13"
+      DB_PORT: "3306"
+      DB_NAME: "home_stock"
+      DB_USER: "root"
+      DB_PASSWORD: "@S0n3p4r!!"

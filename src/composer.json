@@ -1,0 +1,15 @@
+{
+    "name": "anderson.lucas/home-stock",
+    "autoload": {
+        "psr-4": {
+            "AndersonLucas\\HomeStock\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anderson Lucas Silva",
+            "email": "60202592+AndersonLucas-S@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}

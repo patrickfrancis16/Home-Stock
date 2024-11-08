@@ -6,18 +6,16 @@ use AndersonLucas\HomeStock\Config\Database;
 
 class ProductController
 {
+    private $productRepository;
+
+    public function __construct()
+    {
+        $this->productRepository = new ProductRepository();
+    }
+
     public function index()
     {
-        $db = new Database();
-
-        $conn = $db->getConnection();
-        $stmt = $conn->query("SELECT * FROM products");
-
-        $result = $stmt->fetchAll();
-
-        $conn = null;
-
-        return $result;
+        return $this->productRepository->all();
     }
 
     /*

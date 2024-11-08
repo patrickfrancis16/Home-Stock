@@ -7,26 +7,27 @@ use AndersonLucas\HomeStock\Config\Database;
 abstract class Repository
 {
    private $table;
-   private $conn;
-
     public function __construct($table)
     {
-         $this->table = $table;
-         $db = new Database();
-         $this->conn = $db->getConnection();
+         $this->table = $table;        
+        
     }
 
     public function all()
-    {
-        $stmt = $this->conn->query("SELECT * FROM {$this->table}");
+    {        
+        $stmt = Database::getConnection()->query("SELECT * FROM {$this->table}");
         $result = $stmt->fetchAll();
+        Database::closeConnection();
         return $result;
     }
 
     public function find($id)
     {
-        $stmt = $this->conn->query("SELECT * FROM {$this->table} WHERE id = {$id}");
+        $stmt = Database::getConnection()->prepare("SELECT * FROM {$this->table} WHERE id = :id");
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
         $result = $stmt->fetch();
+        Database::closeConnection();
         return $result;
     }
 
@@ -35,13 +36,14 @@ abstract class Repository
         $fields = implode(', ', array_keys($data));
         $values = ':' . implode(', :', array_keys($data));
 
-        $stmt = $this->conn->prepare("INSERT INTO {$this->table} ({$fields}) VALUES ({$values})");
+        $stmt = Database::getConnection()->prepare("INSERT INTO {$this->table} ({$fields}) VALUES ({$values})");
 
         foreach ($data as $key => $value) {
             $stmt->bindValue(":{$key}", $value);
         }
 
         $stmt->execute();
+        Database::closeConnection();
     }
 
     public function update($id, $data)
@@ -53,25 +55,24 @@ abstract class Repository
 
         $fields = rtrim($fields, ', ');
 
-        $stmt = $this->conn->prepare("UPDATE {$this->table} SET {$fields} WHERE id = {$id}");
+        $stmt = Database::getConnection()->prepare("UPDATE {$this->table} SET {$fields} WHERE id = :id");
+        $stmt->bindValue(':id', $id);
 
         foreach ($data as $key => $value) {
             $stmt->bindValue(":{$key}", $value);
         }
 
         $stmt->execute();
+        Database::closeConnection();
+        
     }
 
     public function delete($id)
     {
-        $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE id = :id");
+        $stmt = Database::getConnection()->prepare("DELETE FROM {$this->table} WHERE id = :id");
         $stmt->bindValue(':id', $id);
         $stmt->execute();
-    }
-
-    public function __destruct()
-    {
-        $this->conn = null;
-    }
+        Database::closeConnection();
+    }  
 
 }

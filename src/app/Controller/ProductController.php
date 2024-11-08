@@ -3,6 +3,7 @@
 namespace AndersonLucas\HomeStock\Controller;
 
 use AndersonLucas\HomeStock\Config\Database;
+use AndersonLucas\HomeStock\Repository\ProductsRepository;
 
 class ProductController
 {
@@ -10,7 +11,7 @@ class ProductController
 
     public function __construct()
     {
-        $this->productRepository = new ProductRepository();
+        $this->productRepository = new ProductsRepository();
     }
 
     public function index()

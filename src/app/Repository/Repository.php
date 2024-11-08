@@ -3,26 +3,22 @@
 namespace AndersonLucas\HomeStock\Repository;
 
 use AndersonLucas\HomeStock\Config\Database;
+use PDO;
 
-abstract class Repository
-{
-   private $table;
-    public function __construct($table)
-    {
-         $this->table = $table;        
-        
+abstract class Repository {
+    private $table;
+    public function __construct($table) {
+        $this->table = $table;
     }
 
-    public function all()
-    {        
+    public function all() {
         $stmt = Database::getConnection()->query("SELECT * FROM {$this->table}");
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         Database::closeConnection();
         return $result;
     }
 
-    public function find($id)
-    {
+    public function find($id) {
         $stmt = Database::getConnection()->prepare("SELECT * FROM {$this->table} WHERE id = :id");
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -31,8 +27,7 @@ abstract class Repository
         return $result;
     }
 
-    public function create($data)
-    {
+    public function create($data) {
         $fields = implode(', ', array_keys($data));
         $values = ':' . implode(', :', array_keys($data));
 
@@ -46,8 +41,7 @@ abstract class Repository
         Database::closeConnection();
     }
 
-    public function update($id, $data)
-    {
+    public function update($id, $data) {
         $fields = '';
         foreach ($data as $key => $value) {
             $fields .= "{$key} = :{$key}, ";
@@ -64,15 +58,12 @@ abstract class Repository
 
         $stmt->execute();
         Database::closeConnection();
-        
     }
 
-    public function delete($id)
-    {
+    public function delete($id) {
         $stmt = Database::getConnection()->prepare("DELETE FROM {$this->table} WHERE id = :id");
         $stmt->bindValue(':id', $id);
         $stmt->execute();
         Database::closeConnection();
-    }  
-
+    }
 }

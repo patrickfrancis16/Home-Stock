@@ -1,20 +1,26 @@
 <?php
+
 namespace AndersonLucas\HomeStock\Controller;
 
-require_once 'Config/database.php';
+use AndersonLucas\HomeStock\Config\Database;
 
 class ProductController
 {
     public function index()
     {
-        $db = new \Database();
-        $db->query("SELECT * FROM products");
-        $db->execute();
-        $products = $db->getResults();
+        $db = new Database();
 
-        return $products;
+        $conn = $db->getConnection();
+        $stmt = $conn->query("SELECT * FROM products");
+
+        $result = $stmt->fetchAll();
+
+        $conn = null;
+
+        return $result;
     }
 
+    /*
     public function show($id)
     {
         $db = new \Database();
@@ -61,5 +67,5 @@ class ProductController
         $product = $db->getOne();
         return $product;
     }
-
+    */
 }

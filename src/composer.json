@@ -2,7 +2,7 @@
     "name": "anderson.lucas/home-stock",
     "autoload": {
         "psr-4": {
-            "AndersonLucas\\HomeStock\\": "src/"
+            "AndersonLucas\\HomeStock\\": "app/"
         }
     },
     "authors": [

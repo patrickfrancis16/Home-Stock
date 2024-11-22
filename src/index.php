@@ -10,10 +10,12 @@ $request = $_SERVER['REQUEST_URI'];
 
 $request = preg_replace('/^\/home-stock/', '', $request);
 
+$BASE_URL = "http://localhost:8080/";
+
 switch ($request) {
     case '/':
     case '':
-        echo "Bem-vindo à página inicial de home-stock";
+        require_once "./app/View/view.home.php";
         break;
 
     case '/products':

@@ -10,6 +10,8 @@ $request = $_SERVER['REQUEST_URI'];
 
 $request = preg_replace('/^\/home-stock/', '', $request);
 
+define("BASE_URL", "http://localhost:8080/");
+
 $BASE_URL = "http://localhost:8080/";
 
 switch ($request) {
@@ -24,6 +26,10 @@ switch ($request) {
 
     case '/categoria-y':
         echo "Página da Categoria Y";
+        break;
+
+    case '/add-product':
+        require_once "./app/View/view.add-products.php";
         break;
 
     default:        // Caso não haja uma rota definida
